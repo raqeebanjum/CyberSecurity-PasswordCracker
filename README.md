@@ -23,3 +23,8 @@ venv\Scripts\Activate.ps1
 
 #### Install requirements
 pip install -r requirements.txt
+
+
+## Usage
+## From the root directory, run this command
+#### python3 -m src.main
