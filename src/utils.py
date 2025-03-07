@@ -3,12 +3,26 @@ from zipfile import ZipFile, BadZipFile
 from src.config import *
 
 def check_zip_exists():
-    print("This one should see if input.zip actually exists")
-    
+    """Check if input.zip exists in input folder"""
+    # making sure that input.zip is actually in the input folder
+    pass
 
 def is_password_protected():
-    print("This should see if zip input.zip is actually protected")
-    print("there isnt' a reason to try to crack it if it's not even password protected")
-    
+    """Verify if ZIP is password protected"""
+    # Making sure that the zip file is actually protected
+    pass
+
 def validate_zip():
-    print("Combine the previous checks, to make it easy to call in main")
+    """Run all validation checks"""
+    # combine the previous two checks
+    pass
+
+def display_menu():
+    """Display method selection menu"""
+    # Show the user the selection menu, like let them pick which method to use right now
+    pass
+
+def get_user_choice():
+    """Get and validate user's method choice"""
+    # get whatever the user says
+    pass

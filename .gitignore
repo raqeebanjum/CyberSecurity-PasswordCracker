@@ -13,7 +13,7 @@ ENV/
 .idea/
 
 # Project specific
-input/*.zip
+
 
 # Mac specific
 .DS_Store
