@@ -13,7 +13,18 @@ def check_zip_exists():
 def is_password_protected():
     """Verify if ZIP is password protected"""
     # Making sure that the zip file is actually protected
+    try: 
+        with ZipFile(file_path) as zip_file:
+            for file_info in zip_file.infolist():
+                if file_info.flag_bits & 0x1:
+                    print("This file is indeed encrpyted!")
+                    return True
+            print("This file is NOT password protected.")
+            return False
+    except BadZipFile: 
+        return CORRUPTED_ZIP
 
+            
     pass
 
 def validate_zip():
