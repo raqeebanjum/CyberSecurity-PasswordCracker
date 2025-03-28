@@ -53,3 +53,16 @@ def get_user_choice():
             return int(userChoice)
         print("Thats an invalid choice. Please Try Again.")
    # pass
+
+def get_user_input_hints_based_attack():
+    userHints = {}
+    count = 1
+    
+    while True:
+        hint = input(f"Hint {count}: ").strip()
+        if hint.upper() == "STOP":
+            break
+        userHints[count] = hint
+        count += 1
+
+    return userHints
