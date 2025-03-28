@@ -16,8 +16,7 @@ Piloted by Big Daddy Danny Ya Hearrrdddddd
 
 # NOTES
     As of 03/28/25, user input not yet implemented, hardcoded data will be used as hints for testing 
-    purposes.
-    As of now, possible hints will include, but not limited to: 
+    purposes. Possible hints will include any significant information that 
 
 
 """
@@ -30,19 +29,41 @@ def hints_based_attack(zip_path: str, hints_dict: dict):
    For now, gonna hardcode hints to pass into the method until we have user-input.
    Going to base it on [name, birth year, favorite color, favorite sport]
    """
-
    #example hints
    hints = ['sam', '2000', 'blue', 'football']
+   guesses = generate_guesses(hints)
 
-def generate_guesses(hints):
+   # ripped logic from dictionary_attack
+   # instead of reading from a file, loop through the list of guesses
+   with zipfile.ZipFile(zip_path, 'r') as zip_file:
+        for password in guesses:
+            try:
+                zip_file.extractall(pwd=password.encode('utf-8'))
+                print(f"[SUCCESS] Password found: {password}")
+                return password
+            except:
+                print(f"[FAILED] Trying: {password}")
+    print("[-] Password not found.")
+    return None
+
+
+# generates guesses to test with hardcoded information
+def generate_guesses(hints): 
     guesses = set()
 
     # Add individual hints
     for hint in hints:
         guesses.add(hint)
-
+    """
+        So this itertools.permutations tool I found online - it'll actually generate all
+        the ordered pairs we could have using the values in hints. So like ['sam', 'football']
+        would become 'samfootball' as a potential password guess. Not sure if it works yet.
+    """
     # Add 2-hint combos ---> order matters in this 
-    for combo in itertools.permutations(hints, 2):
+    for combo in itertools.permutations(hints, 2): 
         guesses.add(''.join(combo))
 
+    # convert to list
+    # should return all single hints + the permutations of paired hints
     return list(guesses)
+    
