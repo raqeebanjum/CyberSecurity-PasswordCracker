@@ -1,13 +1,4 @@
 """
-Piloted by Big Daddy Danny Ya Hearrrdddddd
-    ****Speakers Notes****
-    Hey guys! It's yourrrr boy Danny here bringing you a new and improved hints-based attack! This 
-    is going to be my best attempt at this, as this is my very first time coding a project of this 
-    nature! A first time for everything right?!?!? Hahaha glad we're having fun here! I haven't coded 
-    in python in a while, so if my syntax is a little janky, then dont tell me because you'll hurt 
-    my feelings! Haha lets get to work!
-
-
 # Overview
     This is a hints-based method that attempts to crack a password using "hints" given from the user. 
     The idea is that a user will be prompted by the system to enter some basic information. The basic 
@@ -15,22 +6,17 @@ Piloted by Big Daddy Danny Ya Hearrrdddddd
     access. 
 
 # NOTES
-    As of 03/28/25, user input not yet implemented, hardcoded data will be used as hints for testing 
-    purposes. Possible hints will include any significant information that 
-
+    03/29/25 - hints_based_attack now calls get_user_input_hints_based_attack() to have the user input
+    their own hints. It continues and then stops once user specifies. generate_guesses() needs to be 
+    further modified to generate more than just ordered-paired guesses
 
 """
 
 import zipfile
 import itertools
 
-def hints_based_attack(zip_path: str, hints_dict: dict):
-   """
-   For now, gonna hardcode hints to pass into the method until we have user-input.
-   Going to base it on [name, birth year, favorite color, favorite sport]
-   """
-   #example hints
-   hints = ['sam', '2000', 'blue', 'football']
+def hints_based_attack(zip_path: str):
+   hints = get_user_input_hints_based_attack()
    guesses = generate_guesses(hints)
 
    # ripped logic from dictionary_attack
