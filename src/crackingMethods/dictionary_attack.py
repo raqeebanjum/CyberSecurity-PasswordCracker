@@ -28,6 +28,14 @@ def dictionary_attack(zip_path, dict_path):
     :param dict_path: Path to the dictionary file containing common passwords.
     :return: The cracked password if found, otherwise None.
     """
+def dictionary_attack(zip_path, dict_path):
+    """
+    Attempts to crack a password-protected ZIP file using a dictionary attack.
+    
+    :param zip_path: Path to the password-protected ZIP file.
+    :param dict_path: Path to the dictionary file containing common passwords.
+    :return: The cracked password if found, otherwise None.
+    """
     try:
         # Open the ZIP file in read mode
         with zipfile.ZipFile(zip_path, 'r') as zip_file:
@@ -37,13 +45,16 @@ def dictionary_attack(zip_path, dict_path):
                 
                 # Iterate through each password in the dictionary
                 for password in dict_file:
-                    password = password.strip()  # Remove any leading/trailing whitespace
-                    
                     try:
+                        password = password.strip()  # Remove any leading/trailing whitespace
+                        
                         # Attempt to extract the ZIP file using the current password
                         zip_file.extractall(pwd=password.encode('utf-8'))
                         print(f"[SUCCESS] Password found: {password}")
                         return password  # Stop if password is found
+                    except KeyboardInterrupt:
+                        print("\n[INFO] Interrupted by user. Stopping dictionary attack.")
+                        return None
                     except:
                         # If extraction fails, the password is incorrect
                         print(f"[FAILED] Trying: {password}")

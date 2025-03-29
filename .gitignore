@@ -15,5 +15,27 @@ ENV/
 # Project specific
 
 
+# Media files, I put this here to avoid uploading the outputs
+*.mov
+*.mp4
+*.avi
+*.wmv
+*.flv
+*.mkv
+*.gif
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.svg
+*.tiff
+*.webp
+*.webm
+
+# Generated outputs
+output/
+results/
+
+
 # Mac specific
 .DS_Store
