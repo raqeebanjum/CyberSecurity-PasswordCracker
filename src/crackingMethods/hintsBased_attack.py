@@ -14,6 +14,8 @@
 
 import zipfile
 import itertools
+from src.utils import get_user_input_hints_based_attack
+
 
 def hints_based_attack(zip_path: str):
    hints = get_user_input_hints_based_attack()

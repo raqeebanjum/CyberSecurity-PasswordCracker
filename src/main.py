@@ -3,6 +3,7 @@ from src.utils import validate_zip, display_menu, get_user_choice, list_zip_file
 from src.config import *
 from src.crackingMethods.dictionary_attack import dictionary_attack
 from src.crackingMethods.bruteForce_attack import brute_force_attack
+from src.crackingMethods.hintsBased_attack import hints_based_attack
 
 def main():
     # letting the user pick a zip file, from all the zips in the input folder
@@ -38,8 +39,11 @@ def main():
                 print("Password cracking successful!")
                 break
         
-        elif choice == 3:  # Hints Based Attack - not completed yet. Waiting for danny
-            print("Hints Based Attack is not implemented yet.")
+        elif choice == 3:  # Hints Based Attack
+            result = hints_based_attack(zip_path)
+            if result:
+                print("Password cracking successful!")
+                break
         
         elif choice == 0:  # Exit
             print("Exiting program...")

@@ -30,24 +30,34 @@ def display_menu():
 def get_user_choice():
     """Get and validate user's method choice"""
     while True:
-        userChoice = input("Enter your choice (1-4): ")
+        userChoice = input("Enter your choice (0-3): ")
         if userChoice in {'0', '1', '2', '3'}:
             return int(userChoice)
         print("Invalid choice. Try again.")
 
 def get_user_input_hints_based_attack():
     """Collect user-provided hints for future hint-based attacks"""
-    userHints = {}
+    print("\nEnter any hints you think might be part of the password (names, dates, etc).")
+    print("Type 'STOP' when you're done.\n")
+
+    userHints = []
     count = 1
-    
-    while True:
-        hint = input(f"Hint {count}: ").strip()
-        if hint.upper() == "STOP":
-            break
-        userHints[count] = hint
-        count += 1
+
+    try:
+        while True:
+            hint = input(f"Hint {count}: ").strip()
+            if not hint:
+                print("Hint cannot be empty. Try again.")
+                continue
+            if hint.upper() == "STOP":
+                break
+            userHints.append(hint)
+            count += 1
+    except KeyboardInterrupt:
+        print("\n[INFO] Hint entry cancelled by user.")
 
     return userHints
+
 
 def list_zip_files():
     """List all ZIP files in the input folder and let user select one"""
