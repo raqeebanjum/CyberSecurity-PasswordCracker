@@ -31,7 +31,6 @@ def hints_based_attack(zip_path: str):
                 return password
             except:
                 print(f"[FAILED] Trying: {password}")
-        print("[-] Password not found.")
         return None
 
 
