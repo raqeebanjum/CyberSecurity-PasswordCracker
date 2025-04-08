@@ -6,10 +6,10 @@
     access. 
 
 # NOTES
-    03/29/25 - hints_based_attack now calls get_user_input_hints_based_attack() to have the user input
-    their own hints. It continues and then stops once user specifies. generate_guesses() needs to be 
-    further modified to generate more than just ordered-paired guesses
+    04/08/25 - generate_guesses now provides all the possible permutations, and now will add in a dash
+    '-' or underscore '_' for more possibilities. Also plays around with capitalization. 
 
+    Need to add in variation generator (e.g., replace 'e' with '3', 'o' with '0', etc.).
 """
 
 import zipfile
@@ -41,16 +41,21 @@ def generate_guesses(hints):
     # Add individual hints
     for hint in hints:
         guesses.add(hint)
+
     """
         So this itertools.permutations tool I found online - it'll actually generate all
         the ordered pairs we could have using the values in hints. So like ['sam', 'football']
         would become 'samfootball' as a potential password guess. Not sure if it works yet.
     """
-    # Add 2-hint combos ---> order matters in this 
-    for combo in itertools.permutations(hints, 2): 
-        guesses.add(''.join(combo))
+    for r in range(2, len(hints) + 1):
+        for combo in itertools.permutations(hints, r):
+            base = ''.join(combo)
+            guesses.add(base)
 
-    # convert to list
+            guesses.add('_'.join(combo)) # With underscores
+            guesses.add('-'.join(combo)) # With dashes
+            guesses.add(''.join([word.capitalize() for word in combo])) # Capitalized style
+
     # should return all single hints + the permutations of paired hints
     return list(guesses)
     
