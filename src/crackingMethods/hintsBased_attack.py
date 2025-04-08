@@ -9,6 +9,7 @@
     04/08/25 - generate_guesses now provides all the possible permutations, and now will add in a dash
     '-' or underscore '_' for more possibilities. Also plays around with capitalization. 
 
+    Need to add in variation generator (e.g., replace 'e' with '3', 'o' with '0', etc.).
 """
 
 import zipfile
