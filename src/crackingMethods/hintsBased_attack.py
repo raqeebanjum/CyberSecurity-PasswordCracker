@@ -9,6 +9,7 @@
     03/29/25 - hints_based_attack now calls get_user_input_hints_based_attack() to have the user input
     their own hints. It continues and then stops once user specifies. generate_guesses() needs to be 
     further modified to generate more than just ordered-paired guesses
+
 """
 
 import pyzipper
@@ -37,9 +38,15 @@ def generate_guesses(hints):
     # Add individual hints
     for hint in hints:
         guesses.add(hint)
-
-    # Add 2-hint combos ---> order matters
+    """
+        So this itertools.permutations tool I found online - it'll actually generate all
+        the ordered pairs we could have using the values in hints. So like ['sam', 'football']
+        would become 'samfootball' as a potential password guess. Not sure if it works yet.
+    """
+    # Add 2-hint combos ---> order matters in this 
     for combo in itertools.permutations(hints, 2): 
         guesses.add(''.join(combo))
 
+    # convert to list
+    # should return all single hints + the permutations of paired hints
     return list(guesses)
