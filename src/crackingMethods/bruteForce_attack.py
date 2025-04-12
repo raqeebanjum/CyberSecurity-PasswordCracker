@@ -1,48 +1,57 @@
-import zipfile
-import zlib
-
+import pyzipper
 import itertools
 import string
+import threading
+from concurrent.futures import ThreadPoolExecutor
+import io
 
-def brute_force_attack(zip_path: str, max_length=5):
+def try_password(zip_bytes, password, found_event, result_holder):
     """
-    Attempts to brute-force the password for a ZIP file by trying every 
-    possible combination of lowercase letters and digits up to max_length.
-    
-    :param zip_path: Path to the ZIP file.
-    :param max_length: Maximum password length to attempt.
-    :return: True if the password is found, otherwise False.
+    Attempts to extract ZIP with a given password.
+    Exits early if another thread finds the password.
     """
-    # Define the set of characters to use in the brute-force attack
+    if found_event.is_set():
+        return
+
+    try:
+        zip_stream = io.BytesIO(zip_bytes)
+        with pyzipper.AESZipFile(zip_stream, 'r') as zip_file:
+            zip_file.extractall(pwd=password.encode('utf-8'))
+            found_event.set()
+            result_holder.append(password)
+    except:
+        pass  # Ignore failed attempts
+
+
+def brute_force_attack(zip_path: str, max_length=5, max_threads=8):
+    """
+    Attempts to brute-force the password for a ZIP file using parallel threads.
+
+    """
+    # Read the ZIP file once into memory
+    with open(zip_path, 'rb') as f:
+        zip_bytes = f.read()
+
     characters = string.ascii_lowercase + string.digits
+    found_event = threading.Event()
+    result_holder = []
 
-    # Open the ZIP file for extraction attempts
-    with zipfile.ZipFile(zip_path, 'r') as zip_file:
-        # Get the first file in the archive to test passwords
-        test_file = zip_file.namelist()[0]
-
-        # Try passwords of increasing lengths from 1 to max_length
+    with ThreadPoolExecutor(max_workers=max_threads) as executor:
         for length in range(1, max_length + 1):
-            print(f"Trying passwords of length {length}...")
+            if found_event.is_set():
+                break
+            print(f"[INFO] Trying passwords of length {length}...")
 
-            # Generate all possible character combinations of the current length
             for attempt in itertools.product(characters, repeat=length):
-                password = ''.join(attempt)  # Convert tuple to string
+                if found_event.is_set():
+                    break
 
-                try:
-                    # Try reading the first file with the current password
-                    zip_file.open(test_file, pwd=password.encode('utf-8'))
-                    
-                    # If successful, try extracting to verify the password
-                    zip_file.extractall(pwd=password.encode('utf-8'))
-                    print(f"Password found: {password}")
-                    return True
+                password = ''.join(attempt)
+                executor.submit(try_password, zip_bytes, password, found_event, result_holder)
 
-                except (RuntimeError, zipfile.BadZipFile, zlib.error):
-                    # If extraction fails, continue to the next attempt
-                    continue
-
-        # Return False if no password was found
-        return False
-
-    
+    if result_holder:
+        print(f"[SUCCESS] Password found: {result_holder[0]}")
+        return result_holder[0]
+    else:
+        print("[INFO] Password not found with brute force.")
+        return None

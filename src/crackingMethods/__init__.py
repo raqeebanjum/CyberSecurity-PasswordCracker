@@ -1,3 +1,3 @@
 from .dictionary_attack import dictionary_attack
 from .bruteForce_attack import brute_force_attack
-from src.crackingMethods.hintsBased_attack import hints_based_attack
+from crackingMethods.hintsBased_attack import hints_based_attack

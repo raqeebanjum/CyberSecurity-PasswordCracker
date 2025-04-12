@@ -1,9 +1,10 @@
 import os
-from src.utils import validate_zip, display_menu, get_user_choice, list_zip_files
-from src.config import *
-from src.crackingMethods.dictionary_attack import dictionary_attack
-from src.crackingMethods.bruteForce_attack import brute_force_attack
-from src.crackingMethods.hintsBased_attack import hints_based_attack
+from utils import validate_zip, display_menu, get_user_choice, list_zip_files
+from config import *
+from crackingMethods.dictionary_attack import dictionary_attack
+from crackingMethods.bruteForce_attack import brute_force_attack
+from crackingMethods.hintsBased_attack import hints_based_attack
+import time
 
 def main():
     # letting the user pick a zip file, from all the zips in the input folder
@@ -23,18 +24,20 @@ def main():
 
     # loop that'll first display their options and then ask for the user choice for method of attack
     while True:
-        display_menu()
+        #display_menu()
         choice = get_user_choice()
         
         if choice == 1:  # Dictionary Attack
             dict_path = os.path.join('src', 'crackingMethods', 'wordLists', 'list1.txt')
+            
             result = dictionary_attack(zip_path, dict_path)
+
             if result:
                 print("Password cracking successful!")
                 break
         
         elif choice == 2:  # Brute Force Attack
-            result = brute_force_attack(zip_path)
+            result = brute_force_attack(zip_path, max_length=5, max_threads=8)
             if result:
                 print("Password cracking successful!")
                 break

@@ -1,6 +1,8 @@
 import os
 from zipfile import ZipFile, BadZipFile
-from src.config import *
+from config import *
+from InquirerPy import inquirer
+
 
 def is_password_protected(file_path):
     """Verify if ZIP is password protected"""
@@ -19,6 +21,8 @@ def validate_zip(file_path):
     if not is_password_protected(file_path):
         return NOT_PASSWORD_PROTECTED
 
+
+
 def display_menu():
     """Display method selection menu"""
     print("\nSelect a password cracking method:")
@@ -27,13 +31,19 @@ def display_menu():
     print("3. Hints Based Attack")
     print("0. Exit")
 
+        
 def get_user_choice():
-    """Get and validate user's method choice"""
-    while True:
-        userChoice = input("Enter your choice (0-3): ")
-        if userChoice in {'0', '1', '2', '3'}:
-            return int(userChoice)
-        print("Invalid choice. Try again.")
+    choices = [
+        {"name": "Dictionary Attack", "value": 1},
+        {"name": "Brute Force Attack", "value": 2},
+        {"name": "Hints Based Attack", "value": 3},
+        {"name": "Exit", "value": 0},
+    ]
+    
+    return inquirer.select(
+        message="Select a password cracking method:",
+        choices=choices,
+    ).execute()
 
 def get_user_input_hints_based_attack():
     """Collect user-provided hints for future hint-based attacks"""
@@ -60,23 +70,16 @@ def get_user_input_hints_based_attack():
 
 
 def list_zip_files():
-    """List all ZIP files in the input folder and let user select one"""
+    """List all ZIP files with arrow-key selection"""
     zip_files = [f for f in os.listdir(INPUT_FOLDER) if f.endswith('.zip')]
     if not zip_files:
         print("No ZIP files found in the input folder.")
         return None
-    
-    print("\nAvailable ZIP files:")
-    for idx, file in enumerate(zip_files, 1):
-        print(f"{idx}. {file}")
-    
-    while True:
-        try:
-            choice = int(input("\nEnter the number of the ZIP file you want to crack (or 0 to exit): "))
-            if choice == 0:
-                return None
-            if 1 <= choice <= len(zip_files):
-                return zip_files[choice - 1]
-            print("Invalid choice. Please try again.")
-        except ValueError:
-            print("Please enter a valid number.")
+
+    choices = zip_files + ["Exit"]
+    selected = inquirer.select(
+        message="Choose a ZIP file to crack:",
+        choices=choices,
+    ).execute()
+
+    return None if selected == "Exit" else selected

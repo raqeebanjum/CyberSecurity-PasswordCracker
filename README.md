@@ -1,30 +1,31 @@
-## Setup
+# CyberSecurity Password Cracker
 
-### Mac/Linux
-#### Create virtual environment
-python3 -m venv venv
+## Setup Instructions
 
-#### Activate virtual environment
-source venv/bin/activate
+### For windows
+- Double-click `windows.bat` file to start it
+- To 
 
-##### Install requirements
-pip install -r requirements.txt
+### For Mac/Linux
+   - Open Terminal
+   - Navigate to the application folder:
+     ```zsh
+     cd path/to/CyberSecurity-PasswordCracker
+     ```
+   - Make the start script executable (first time only):
+     ```zsh
+     chmod +x mac.sh
+     ```
+   - If you have permission issues, run this Command
+      ```zsh
+     sudo chmod +x mac.sh
+     ```
+   - Run the application:
+     ```zsh
+     ./mac.sh
+     ```
 
-
-### Windows Setup
-#### Create virtual environment
-python -m venv venv
-
-#### Activate virtual environment (Command Prompt)
-venv\Scripts\activate.bat
-
-#### Activate virtual environment (PowerShell)
-venv\Scripts\Activate.ps1
-
-#### Install requirements
-pip install -r requirements.txt
-
-
-## Usage
-## From the root directory, run this command
-#### python3 -m src.main
+### Notes
+- Both scripts will create a virtual environment
+- Then install all required dependencies
+- Start the application

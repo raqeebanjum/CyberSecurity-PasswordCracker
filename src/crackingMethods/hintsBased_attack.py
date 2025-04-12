@@ -9,48 +9,37 @@
     03/29/25 - hints_based_attack now calls get_user_input_hints_based_attack() to have the user input
     their own hints. It continues and then stops once user specifies. generate_guesses() needs to be 
     further modified to generate more than just ordered-paired guesses
-
 """
 
-import zipfile
+import pyzipper
 import itertools
-from src.utils import get_user_input_hints_based_attack
+from utils import get_user_input_hints_based_attack
 
 
 def hints_based_attack(zip_path: str):
-   hints = get_user_input_hints_based_attack()
-   guesses = generate_guesses(hints)
+    hints = get_user_input_hints_based_attack()
+    guesses = generate_guesses(hints)
 
-   # ripped logic from dictionary_attack
-   # instead of reading from a file, loop through the list of guesses
-   with zipfile.ZipFile(zip_path, 'r') as zip_file:
+    with pyzipper.AESZipFile(zip_path, 'r') as zip_file:
         for password in guesses:
             try:
                 zip_file.extractall(pwd=password.encode('utf-8'))
                 print(f"[SUCCESS] Password found: {password}")
                 return password
             except:
-                print(f"[FAILED] Trying: {password}")
+                pass  # Silent fail
         return None
 
 
-# generates guesses to test with hardcoded information
 def generate_guesses(hints): 
     guesses = set()
 
     # Add individual hints
     for hint in hints:
         guesses.add(hint)
-    """
-        So this itertools.permutations tool I found online - it'll actually generate all
-        the ordered pairs we could have using the values in hints. So like ['sam', 'football']
-        would become 'samfootball' as a potential password guess. Not sure if it works yet.
-    """
-    # Add 2-hint combos ---> order matters in this 
+
+    # Add 2-hint combos ---> order matters
     for combo in itertools.permutations(hints, 2): 
         guesses.add(''.join(combo))
 
-    # convert to list
-    # should return all single hints + the permutations of paired hints
     return list(guesses)
-    
