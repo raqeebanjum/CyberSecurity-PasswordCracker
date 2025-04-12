@@ -4,7 +4,6 @@
 
 ### For windows
 - Double-click `windows.bat` file to start it
-- To 
 
 ### For Mac/Linux
    - Open Terminal
