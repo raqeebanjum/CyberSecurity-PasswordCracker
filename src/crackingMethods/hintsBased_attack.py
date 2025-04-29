@@ -14,8 +14,8 @@
 
 import zipfile
 import itertools
-from src.utils import get_user_input_hints_based_attack
 
+from utils import get_user_input_hints_based_attack
 
 def hints_based_attack(zip_path: str):
    hints = get_user_input_hints_based_attack()
@@ -30,7 +30,8 @@ def hints_based_attack(zip_path: str):
                 print(f"[SUCCESS] Password found: {password}")
                 return password
             except:
-                print(f"[FAILED] Trying: {password}")
+                # print(f"[FAILED] Trying: {password}")
+                pass
         return None
 
 
