@@ -37,7 +37,7 @@ def main():
                 break
         
         elif choice == 2:  # Brute Force Attack
-            result = brute_force_attack(zip_path, max_length=5, max_threads=8)
+            result = brute_force_attack(zip_path, max_length=5)
             if result:
                 print("Password cracking successful!")
                 break

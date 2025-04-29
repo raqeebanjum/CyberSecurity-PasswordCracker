@@ -10,13 +10,7 @@ pip install -r requirements.txt
 
 echo [*] Running password recovery tool...
 
-:: Clear the screen before launching
+:: Clear the console
 cls
 
 python src\main.py
-
-echo.
-echo [✔] Done. To run again later:
-echo     call venv\Scripts\activate
-echo     python src\main.py
-pause
